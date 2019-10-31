@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+    <form *ngIf="fileForm" (ngSubmit)="onSubmit()" [formGroup]="fileForm"
+      [ngClass]="{'was-validated': (fileForm.dirty || fileForm.touched)}">
+      <div class="form-group">
+        <label for="exampleInputEmail1">User name</label>
+        <input type="text" class="form-control" formControlName="user" placeholder="Enter name" required>
+        <div class="invalid-feedback" *ngIf="user.invalid && (user.dirty || user.touched)">
+          Please introduce a username.
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="customFile"
+            (change)="selectFile($event.target.files, $event)" required>
+          <label class="custom-file-label" for="customFile">{{fileMsg}}</label>
+          <div class="invalid-feedback" *ngIf="isValidFileInput">
+            <div *ngIf="nameError">
+              The file is required.
+            </div>
+            <div *ngIf="sizeError && !nameError">
+              The file is too big. max value in bytes is: {{sizeError.max}}
+            </div>
+            <div *ngIf="typeError && !sizeError && !nameError">
+              The file type is unacceptable.
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" formControlName="size">
+      <button type="submit" class="btn btn-primary" [disabled]="!fileForm.valid">Submit</button>
+    </form>
+  </div>
+</div>

@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { UploaderFileComponent } from './uploader-file/uploader-file.component';
 
 const routes: Routes = [
     {
@@ -13,7 +12,7 @@ const routes: Routes = [
     },
     {
         path: 'upload-page',
-        component: CounterComponent
+        component: UploaderFileComponent
     },
     {
         path: 'view-page',
