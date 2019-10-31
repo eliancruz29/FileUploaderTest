@@ -1,20 +1,22 @@
 import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileLoader } from '../models/file-loader';
-import { ValidatorService, validType } from '../services/validator.service';
+import { ValidatorService, validType } from '../services/validator/validator.service';
 import { IValidationData } from '../models/validation-data';
+import { FileService } from '../services/file/file.service';
 
 @Component({
   selector: 'app-uploader-file',
   templateUrl: './uploader-file.component.html',
   styleUrls: ['./uploader-file.component.css'],
-  providers: [ValidatorService]
+  providers: [ValidatorService, FileService]
 })
 export class UploaderFileComponent implements OnInit, OnChanges, OnDestroy {
+  public isLoading = true;
   public fileForm: FormGroup;
   public model = new FileLoader();
   public errorMsg = false;
-  public sendingModel = false;
+  public successMsg = false;
   public fileMsg: string;
 
   private subscription: any[] = [];
@@ -29,7 +31,8 @@ export class UploaderFileComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private validatorService: ValidatorService
+    private validatorService: ValidatorService,
+    private fileService: FileService
   ) {
     this.setFileMsg();
   }
@@ -63,27 +66,42 @@ export class UploaderFileComponent implements OnInit, OnChanges, OnDestroy {
 
   public onSubmit() {
     if (this.fileForm.valid) {
+      this.isLoading = true;
       this.prepareModel();
       this.subscription.push(
-        // this.apiService.createProductRequestPl(this.model)
-        //   .subscribe(
-        //     () => {
-        //       this.errorRequest = false;
-        //       this.model = new FileLoader();
-        //       this.rebuildForm();
-        //       this.sendingModel = false;
-        //     },
-        //     error => {
-        //       if (error.status === 400) {
-        //         this.errorRequest = true;
-        //       }
-        //       this.rebuildForm();
-        //       this.sendingModel = false;
-        //     }
-        //   )
+        this.fileService.sendFileMetadata(this.model)
+          .subscribe(
+            file => {
+              this.showMsg(false);
+              this.model = new FileLoader(file);
+              this.rebuildForm();
+            },
+            error => {
+              this.showMsg();
+              this.model = new FileLoader();
+              this.rebuildForm();
+            }
+          )
       );
     } else {
+      this.showMsg();
+    }
+  }
+
+  public dismissAllAlert(): void {
+    this.errorMsg = false;
+    this.successMsg = false;
+  }
+
+  private showMsg(isError = true): void {
+    this.isLoading = false;
+    if (isError) {
+      this.setFileMsg();
       this.errorMsg = true;
+      this.successMsg = false;
+    } else {
+      this.errorMsg = false;
+      this.successMsg = true;
     }
   }
 
@@ -113,6 +131,7 @@ export class UploaderFileComponent implements OnInit, OnChanges, OnDestroy {
       date: [this.model.date, Validators.required],
       user: [this.model.user, Validators.required]
     });
+    this.isLoading = false;
   }
 
   private rebuildForm() {

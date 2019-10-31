@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { environment as env } from '../../environments/environment';
+import { environment as env } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { IValidationData } from '../models/validation-data';
+import { IValidationData } from '../../models/validation-data';
 import { ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Injectable()
