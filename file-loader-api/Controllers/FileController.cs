@@ -26,18 +26,26 @@ namespace file_loader_api.Controllers
 
         // GET: api/file
         [HttpGet]
-        public ActionResult<IEnumerable<FileLoaderDto>> GetFileLoader()
+        public ActionResult<IEnumerable<FileTablesDto>> GetFileTables()
         {
             try
             {
-                var result = _context.FileLoaders.Select(f => new FileLoaderDto
+                var result = _context.FileLoaders
+                .GroupBy(f => f.Type)
+                .OrderBy(f => f.Key)
+                .Select(f => new FileTablesDto
                 {
-                    Name = f.Name,
-                    Size = f.Size,
-                    Type = f.Type,
-                    Date = f.Date,
-                    User = f.User
-                }).ToList();
+                    Type = f.Key,
+                    Files = f.Select(fs => new FileLoaderDto
+                    {
+                        Name = fs.Name,
+                        Size = fs.Size,
+                        Type = fs.Type,
+                        Date = fs.Date,
+                        User = fs.User
+                    })
+                })
+                .ToList();
 
                 if (result == null)
                     return NotFound();
@@ -47,7 +55,7 @@ namespace file_loader_api.Controllers
             catch (Exception ex)
             {
                 // save the exception
-                _logger.LogError(ex, "GetFileLoader", null);
+                _logger.LogError(ex, "GetFileTables", null);
                 return NotFound();
             }
         }

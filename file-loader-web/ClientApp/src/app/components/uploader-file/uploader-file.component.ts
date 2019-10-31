@@ -1,9 +1,9 @@
 import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FileLoader } from '../models/file-loader';
-import { ValidatorService, validType } from '../services/validator/validator.service';
-import { IValidationData } from '../models/validation-data';
-import { FileService } from '../services/file/file.service';
+import { FileLoader } from '../../models/file-loader';
+import { ValidatorService, validType } from '../../services/validator/validator.service';
+import { IValidationData } from '../../models/validation-data';
+import { FileService } from '../../services/file/file.service';
 
 @Component({
   selector: 'app-uploader-file',
@@ -114,7 +114,7 @@ export class UploaderFileComponent implements OnInit, OnChanges, OnDestroy {
             this.createForm(data);
           },
           err => {
-            this.errorMsg = true;
+            this.showMsg();
           })
     );
   }
