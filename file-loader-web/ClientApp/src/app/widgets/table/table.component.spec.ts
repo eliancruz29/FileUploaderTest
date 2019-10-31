@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableComponent } from './table.component';
+import { BytesPipe } from 'src/app/pipes/bytes.pipe';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -8,9 +9,11 @@ describe('TableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableComponent ]
-    })
-    .compileComponents();
+      declarations: [
+        TableComponent,
+        BytesPipe
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

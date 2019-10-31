@@ -72,9 +72,9 @@ export class UploaderFileComponent implements OnInit, OnChanges, OnDestroy {
       this.subscription.push(
         this.fileService.sendFileMetadata(this.model)
           .subscribe(
-            file => {
+            (file: FileLoader) => {
               this.showMsg(false);
-              this.model = new FileLoader(file);
+              this.model = file;
               this.rebuildForm();
             },
             error => {
