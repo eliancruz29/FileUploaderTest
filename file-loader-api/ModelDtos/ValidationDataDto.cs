@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace file_loader_api.Models
+namespace file_loader_api.ModelDtos
 {
-    public class ValidationData
+    public class ValidationDataDto
     {
         [JsonProperty(PropertyName = "size")]
         public long Size { get; set; }

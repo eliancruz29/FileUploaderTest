@@ -1,7 +1,9 @@
-﻿using file_loader_api.Models;
+﻿using file_loader_api.ModelDtos;
+using file_loader_api.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,9 +21,12 @@ namespace file_loader_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var settingsSection =
-                Configuration.GetSection("ValidationData");
-            services.Configure<ValidationData>(settingsSection);
+            // If you wanna use a local express DB just change the connection string for "LocalFileLoader"
+            services.AddDbContext<FileContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("FileLoader")));
+
+            var settingsSection = Configuration.GetSection("ValidationData");
+            services.Configure<ValidationDataDto>(settingsSection);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -43,6 +48,7 @@ namespace file_loader_api
             app.UseCors(builder =>
             {
                 builder.AllowAnyOrigin();
+                builder.AllowAnyHeader();
             });
 
             app.UseHttpsRedirection();

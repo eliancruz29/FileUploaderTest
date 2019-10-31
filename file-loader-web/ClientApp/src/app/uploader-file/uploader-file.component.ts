@@ -59,6 +59,7 @@ export class UploaderFileComponent implements OnInit, OnChanges, OnDestroy {
         this.setFileMsg(file[0].name);
       } else if (e && e.target) {
         e.target.value = null;
+        this.setFileMsg();
       }
       this.fileForm.markAsTouched();
     }
