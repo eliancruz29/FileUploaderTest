@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using file_loader_api.ModelDtos;
 using file_loader_api.Models;
@@ -20,6 +22,34 @@ namespace file_loader_api.Controllers
         {
             _context = context;
             _logger = logger;
+        }
+
+        // GET: api/file
+        [HttpGet]
+        public ActionResult<IEnumerable<FileLoaderDto>> GetFileLoader()
+        {
+            try
+            {
+                var result = _context.FileLoaders.Select(f => new FileLoaderDto
+                {
+                    Name = f.Name,
+                    Size = f.Size,
+                    Type = f.Type,
+                    Date = f.Date,
+                    User = f.User
+                }).ToList();
+
+                if (result == null)
+                    return NotFound();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // save the exception
+                _logger.LogError(ex, "GetFileLoader", null);
+                return NotFound();
+            }
         }
 
         // POST: api/file
