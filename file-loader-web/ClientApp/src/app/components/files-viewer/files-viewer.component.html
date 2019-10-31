@@ -1,46 +1,18 @@
 <div class="row">
   <div class="col col-md-10 offset-md-1">
 
-    <div *ngIf="errorMsg" class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Error!</strong> something wrong while getting the files info.
-      <button type="button" class="close" (click)="dismissAllAlert()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
+    <app-alert *ngIf="errorMsg" [msg]="'something wrong while getting the files info.'" (close)="dismissAllAlert()">
+    </app-alert>
 
     <div *ngIf="isLoading; then thenLoading else elseTables"></div>
 
     <ng-template #thenLoading>
-      <div class="d-flex justify-content-center my-5 py-5">
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
+      <app-loading></app-loading>
     </ng-template>
 
     <ng-template #elseTables>
       <ng-template ngFor let-table [ngForOf]="data">
-        <h2 class="mt-4">{{table.type}}</h2>
-        <div class="table-responsive-md">
-          <table class="table table-striped">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Size</th>
-                <th scope="col">Upload Date</th>
-                <th scope="col">User</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let file of table.files;">
-                <td scope="row">{{file.name}}</td>
-                <td>{{file.size | bytes}}</td>
-                <td>{{file.date | date}}</td>
-                <td>{{file.user}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <app-table [data]="table"></app-table>
       </ng-template>
     </ng-template>
 

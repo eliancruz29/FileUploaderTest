@@ -1,0 +1,7 @@
+<div *ngIf="isError; then thenError else elseSuccess"></div>
+<ng-template #thenError><strong>Error!</strong></ng-template>
+<ng-template #elseSuccess><strong>Success!</strong></ng-template>
+{{msg}}
+<button type="button" class="close" (click)="dismissAlert()">
+  <span aria-hidden="true">&times;</span>
+</button>

@@ -1,0 +1,21 @@
+<h2 class="mt-4">{{data.type}}</h2>
+<div class="table-responsive-md">
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Size</th>
+        <th scope="col">Upload Date</th>
+        <th scope="col">User</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let file of data.files;">
+        <td scope="row">{{file.name}}</td>
+        <td>{{file.size | bytes}}</td>
+        <td>{{file.date | date}}</td>
+        <td>{{file.user}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
