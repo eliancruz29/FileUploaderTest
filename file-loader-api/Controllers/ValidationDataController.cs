@@ -17,9 +17,10 @@ namespace file_loader_api.Controllers
 
         // GET api/validation-data
         [HttpGet]
-        public ActionResult<ValidationDataDto> Get()
+        [ProducesResponseType(200, Type = typeof(ValidationDataDto))]
+        public IActionResult Get()
         {
-            return _validationDataSettings;
+            return Ok(_validationDataSettings);
         }
     }
 }

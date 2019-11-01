@@ -26,7 +26,9 @@ namespace file_loader_api.Controllers
 
         // GET: api/file
         [HttpGet]
-        public ActionResult<IEnumerable<FileTablesDto>> GetFileTables()
+        [ProducesResponseType(200, Type = typeof(List<FileTablesDto>))]
+        [ProducesResponseType(404)]
+        public IActionResult GetFileTables()
         {
             try
             {
@@ -62,7 +64,9 @@ namespace file_loader_api.Controllers
 
         // POST: api/file
         [HttpPost]
-        public async Task<ActionResult<FileLoaderDto>> PostFileLoader(FileLoaderDto data)
+        [ProducesResponseType(200, Type = typeof(FileLoaderDto))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> PostFileLoader(FileLoaderDto data)
         {
             try
             {
